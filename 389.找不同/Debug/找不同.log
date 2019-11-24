@@ -1,0 +1,4 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(452,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (找不同.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  test.c
+D:\Git\Learning-notes\找不同\test.c(23,13): warning C4047: “return”:“char”与“void *”的间接级别不同
+  找不同.vcxproj -> D:\Git\Learning-notes\找不同\Debug\findTheDifference.exe
