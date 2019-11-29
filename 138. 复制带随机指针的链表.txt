@@ -1,0 +1,84 @@
+给定一个链表，每个节点包含一个额外增加的随机指针，该指针可以指向链表中的任何节点或空节点。
+
+要求返回这个链表的深拷贝。
+
+示例：
+
+输入： {"$id":"1","next":{"$id":"2","next":null,"random":{"$ref":"2"},"val":2},"random":{"$ref":"2"},"val":1}
+
+解释： 节点 1 的值是 1，它的下一个指针和随机指针都指向节点 2 。 节点 2 的值是 2，它的下一个指针指向 null，随机指针指向它自己。
+
+提示：
+
+你必须返回给定头的拷贝作为对克隆列表的引用。
+
+来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/copy-list-with-random-pointer 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+
+    Node() {}
+
+    Node(int _val, Node* _next, Node* _random) {
+        val = _val;
+        next = _next;
+        random = _random;
+    }
+};
+*/
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        Node * head1 = head;//原链表游走指针
+        
+        //新结点插入head
+        while(head1)
+        {
+            Node * next = head1-> next;//保存下一个节点的位置
+            Node * newnode = (Node*)malloc(sizeof(Node));//创建节点
+            head1->next = newnode;//链接到后面
+            newnode->next = next;
+            newnode->val = head1->val;
+
+            head1 = next;//更新head1
+        }
+        // head1 =head;
+        // while(head1)
+        // {
+        //     printf("%d ",head1->val);
+        //     head1 = head1->next;
+        // }
+        // head1 =head;  
+        //给新结点附上随机指针
+        head1 =head;
+        while(head1 && head1->next)
+        {
+            Node *next = head1->next->next;//保存下一个原结点地址
+            if(head1->random!= NULL)
+                head1->next->random = head1->random->next;//给新结点附上随机指针
+            else 
+                head1->next->random = NULL;
+            head1 = next;
+        }   
+        
+        //取下新结点，连成链表
+        head1 = head;
+        Node* newhead = (Node*)malloc(sizeof(Node));
+        newhead->next = NULL;
+        Node* newhead1 = newhead;
+        while(head1)
+        {
+            newhead1->next = head1->next;//先连上新
+            head1->next = head1->next->next;//链接原链表
+            newhead1 = newhead1->next;
+            head1 = head1->next;
+        }
+        
+        return newhead->next;
+    }
+};
