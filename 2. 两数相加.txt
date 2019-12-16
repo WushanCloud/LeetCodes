@@ -1,0 +1,150 @@
+给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+示例：
+
+输入：(2 -> 4 -> 3) + (5 -> 6 -> 4) 输出：7 -> 0 -> 8 原因：342 + 465 = 807
+
+来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/add-two-numbers 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+/*边作和，边相连*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+typedef struct ListNode Node;
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    Node * head = (Node *)malloc(sizeof(Node));
+    head->next = NULL;
+    Node * cur = head;
+
+    int tmp = 0;
+    while(l1 != NULL && l2 != NULL)
+    {
+        Node * sum = (Node *)malloc(sizeof(Node));
+        sum->val = l1->val + l2->val + tmp;
+        sum->next = NULL;
+
+        if(sum->val >9)
+        {
+            sum->val = (sum->val)%10;
+            tmp = 1;
+        }
+        else
+        {
+            tmp = 0;
+        }
+
+        cur->next = sum;
+        cur = cur->next;
+
+        l1 = l1->next;
+        l2 = l2->next;
+    }
+    if(l1 != NULL)
+    {
+        cur->next = l1;
+    }
+    else if(l2 != NULL)
+    {
+        cur->next = l2;
+    }
+    
+    while(cur && cur->next && tmp == 1)
+    {
+        cur = cur->next;
+        cur->val = cur->val + tmp;
+        if(cur->val >9)
+        {
+            cur->val = (cur->val)%10;
+            tmp = 1;
+        }
+        else
+        {
+            tmp = 0;
+        }
+    }
+    if ( tmp == 1)
+    {
+        Node * sum = (Node *)malloc(sizeof(Node));
+        sum->val = tmp;
+        sum->next = NULL;
+
+        cur->next = sum;
+        cur = cur->next;
+    }
+    cur = head->next;
+    free(head);
+    return cur;
+}
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+typedef struct ListNode Node;
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2){
+    Node * head = (Node *)malloc(sizeof(Node));
+    head->next = NULL;
+    Node * cur = head;
+
+    while(l1 != NULL && l2 != NULL)
+    {
+        Node * sum = (Node *)malloc(sizeof(Node));
+        sum->val = l1->val + l2->val;
+        sum->next = NULL;
+
+        cur->next = sum;
+        cur = cur->next;
+
+        l1 = l1->next;
+        l2 = l2->next;
+    }
+    if(l1 != NULL)
+    {
+        cur->next = l1;
+    }
+    else if(l2 != NULL)
+    {
+        cur->next = l2;
+    }
+    int tmp = 0;
+    cur = head->next;
+    Node * pre = cur;
+    while(cur)
+    {
+        cur->val = cur->val + tmp;
+        if(cur->val >9)
+        {
+            cur->val = (cur->val)%10;
+            tmp = 1;
+        }
+        else
+        {
+            tmp = 0;
+        }
+        pre = cur;
+        cur = cur->next;
+    }
+    if ( tmp == 1)
+    {
+        Node * sum = (Node *)malloc(sizeof(Node));
+        sum->val = tmp;
+        sum->next = NULL;
+
+        pre->next = sum;
+    }
+    cur = head->next;
+    free(head);
+    return cur;
+}
