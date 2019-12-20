@@ -1,0 +1,176 @@
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。 左括号必须以正确的顺序闭合。 注意空字符串可被认为是有效字符串。
+
+示例 1:
+
+输入: "()" 输出: true 示例 2:
+
+输入: "()[]{}" 输出: true 示例 3:
+
+输入: "(]" 输出: false 示例 4:
+
+输入: "([)]" 输出: false 示例 5:
+
+输入: "{[]}" 输出: true
+
+来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/valid-parentheses 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+#define maxsize 10;
+typedef char STDataType;
+
+// 支持动态增长的栈
+
+typedef struct Stack
+{
+	STDataType* myarr;
+	int _top;       // 栈顶  
+	int _capacity;  // 容量 
+}Stack;
+
+void StackInit(Stack* ps);
+void StackCapacity(Stack* ps);
+// void Stackprint(Stack *ps);
+void StackPush(Stack* ps, STDataType x);
+void StackPop(Stack* ps);
+STDataType StackTop(Stack* ps);
+// int StackEmpty(Stack* ps);
+int StackSize(Stack* ps);
+
+void StackInit(Stack* ps)//创建空数组
+{
+    assert(ps);
+	ps->_capacity = maxsize;
+	ps->_top = 0;
+	ps->myarr = (STDataType*)malloc(sizeof(STDataType) * ps->_capacity);
+	// if (ps->myarr == NULL)
+	// 	return 0;
+}
+void StackCapacity(Stack* ps)//扩容
+{
+	assert(ps);
+	if (ps->_top == ps->_capacity)
+	{
+		// if (ps->myarr == 0)
+		// 	ps->_capacity = 2;
+		ps->myarr= (STDataType *)realloc(ps->myarr, ps->_capacity*sizeof(STDataType)* 2);
+		ps->_capacity = ps->_capacity * 2;
+	}
+}
+
+void StackPush(Stack* ps, STDataType x)//入栈
+{
+	assert(ps);
+	StackCapacity(ps);
+	ps->myarr[ps->_top] = x;
+	ps->_top++;
+}
+// void Stackprint(Stack *ps)//打印栈
+// {
+// 	assert(ps);
+// 	Stack *p = ps;
+// 	for (int i = 0; i < ps->_top; i++)
+// 	{
+// 		printf("%d  ", ps->myarr[i]);
+
+// 	}printf("\n");
+// }
+void StackPop(Stack* ps)//出栈
+{
+	assert(ps);
+	// if (ps->_top == 0)
+	// {
+	// 	printf("栈为空\n");
+	// 	return 0;
+	// }
+	ps->_top--;
+}
+// int StackEmpty(Stack* ps)//清空栈
+// {
+// 	assert(ps);
+// 	ps->_capacity = 0;
+// 	ps->_top = 0;
+// 	free(ps->myarr);
+// 	if (ps->_top == 0)
+// 		printf("栈为空");
+// }
+int StackSize(Stack* ps)//输出栈的大小
+{
+	assert(ps); 
+	//  printf("栈的长度为%d\n",ps->_top);
+    return ps->_top;
+}
+STDataType StackTop(Stack* ps)
+{
+	assert(ps);
+	if (ps->_top == 0)
+	{
+		//printf("栈为空\n");
+		return 0;
+	}
+	//printf("栈顶的内容%d\n", ps->myarr[ps->_top-1]);
+	return ps->myarr[ps->_top-1];
+}
+bool isValid(char * s){
+    Stack ST ;
+    StackInit(&ST);
+    char tmp[] = {'(',')','[',']','{','}'};
+    while(*s)
+    {
+        int i = 0;
+        while(*s != tmp[i]) i++;
+
+        if(i%2 == 0)//前括号
+        {
+            StackPush(&ST,*s);
+        }
+        else
+        {
+            if(StackTop(&ST) == tmp[i-1])//匹配
+            {
+                StackPop(&ST);
+            }
+            else return false;
+        }
+        s++;
+    }
+    if(StackSize(&ST) == 0)
+    return true;
+    else return false;
+}
+bool isValid(char* s) {
+	const char tmp[] = { '(',')','[',']','{','}' };
+	int i = -1;
+	int j = -1;
+	while (s[i+1])
+	{
+		int k = 0;
+		while (s[i+1] != tmp[k]) k++;
+		if (k % 2 == 0)
+		{
+			i++;
+			j++;
+		}
+		else
+		{
+			j++;
+			if (i < 0 || s[i] != tmp[k - 1])
+				return false;
+			else
+			{
+				int ii = i;
+				int jj = j + 1;
+				while (s[ii] = s[jj])
+				{
+					ii++; jj++;
+				}
+				s[ii + 1] = '\0';
+			}
+			i--; j -= 2;
+		}
+	}
+	if (*s == '\0')return true;
+	else return false;
+}
