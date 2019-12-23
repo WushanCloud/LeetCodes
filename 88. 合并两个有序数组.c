@@ -11,7 +11,7 @@
 来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/merge-sorted-array 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 /*
-解法一：把第二个数组直接放在第一个数组后面，然后进行排序
+解法一：把第二个数组直接放在第一个数组后面，然后进行排序  
 */
 int cmp(int * a,int * b)
 {
