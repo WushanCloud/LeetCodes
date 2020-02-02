@@ -1,0 +1,78 @@
+「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。前五项如下：
+
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+1 被读作  "one 1"  ("一个一") , 即 11。
+11 被读作 "two 1s" ("两个一"）, 即 21。
+21 被读作 "one 2",  "one 1" （"一个二" ,  "一个一") , 即 1211。
+
+给定一个正整数 n（1 ≤ n ≤ 30），输出外观数列的第 n 项。
+
+注意：整数序列中的每一项将表示为一个字符串。
+
+ 
+
+示例 1:
+
+输入: 1
+输出: "1"
+解释：这是一个基本样例。
+示例 2:
+
+输入: 4
+输出: "1211"
+解释：当 n = 3 时，序列是 "21"，其中我们有 "2" 和 "1" 两组，"2" 可以读作 "12"，也就是出现频次 = 1 而 值 = 2；类似 "1" 可以读作 "11"。所以答案是 "12" 和 "11" 组合在一起，也就是 "1211"。
+来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/count-and-say 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+int tip_move(char *arr,int *tip_arr)
+{
+    //记录位数
+    int sum = 0;
+    //保存第一位值
+    char start = arr[*tip_arr];
+    //计数
+    while(start == arr[*tip_arr])
+    {
+        sum++;
+        //移动
+        (*tip_arr)++;
+    }
+    return sum;
+}
+
+char * countAndSay(int n){
+    //保存字符串的数组
+    char* arr = (char* )malloc(sizeof(char)*5000);
+    //位置标记，在最后一位加上'\0'
+    int tip_arr = 0;
+    //第一次是特殊的，从无到有，单独计算
+    arr[tip_arr++] = '1';arr[tip_arr] = '\0';
+    if(n == 1) return arr;
+    //剩下一共循环计算n-1次
+    for (int i = 0; i < n-1; i++)
+    {
+        //每次迭代开始位数从头开始标记
+        tip_arr = 0;
+        //设置一个新的数组临时存储数组
+        char temp[5000] = {0};
+        //临时数组的位置标记
+        int tip_temp = 0;
+        //开始生成
+        while(arr[tip_arr] != '\0')
+        {
+            //标记下一个数是几
+            char num = arr[tip_arr];
+            //标记移动和计算有几位数连续
+            int sum = tip_move(arr,&tip_arr);
+            //创建新的字符串数组
+            temp[tip_temp++] = sum+ '0';
+            temp[tip_temp++] = num ;
+        }
+        //将temp内容放到arr
+        strcpy(arr,temp);
+    }
+    return arr;
+}
