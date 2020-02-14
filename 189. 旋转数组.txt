@@ -1,0 +1,79 @@
+给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+
+示例 1:
+
+输入: [1,2,3,4,5,6,7] 和 k = 3 输出: [5,6,7,1,2,3,4] 解释: 向右旋转 1 步: [7,1,2,3,4,5,6] 向右旋转 2 步: [6,7,1,2,3,4,5] 向右旋转 3 步: [5,6,7,1,2,3,4] 示例 2:
+
+输入: [-1,-100,3,99] 和 k = 2 输出: [3,99,-1,-100] 解释: 向右旋转 1 步: [99,-1,-100,3] 向右旋转 2 步: [3,99,-1,-100] 说明:
+
+尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。 要求使用空间复杂度为 O(1) 的 原地 算法。
+
+来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/rotate-array 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+/*
+解法一：数组分成2半各自原地交换，再总的交换一次
+*/
+void reverse(int* left, int* right)//左右交换left--right的内容
+{
+	while (left < right)
+	{
+		int chip = *right;
+		*right = *left;
+		*left = chip;
+		left++;
+		right--;
+	}
+}
+void rotate(int* nums, int numsSize, int k) {
+	reverse(nums, nums + numsSize - k%numsSize-1);//0--k-1交换
+	reverse(nums + numsSize-k%numsSize, nums + numsSize - 1);//k-len-1交换
+	reverse(nums, nums + numsSize - 1);//0--len-1交换
+}
+/*
+解法二：不限空间的话
+*/
+void rotate(int* nums, int numsSize, int k) {
+	k = k % numsSize;
+	int* nums1 = (int*)malloc(4 * numsSize * 2);
+	assert(nums1);
+	int i = 0;
+	while (i < numsSize)
+	{
+		nums1[i] = nums[i];
+		i++;
+	}
+	i = 0;
+	while (i < numsSize)
+	{
+		nums1[i+ numsSize] = nums[i];
+		i++;
+	}
+	int j = 0;
+	i = numsSize - k;
+	while (j < numsSize)
+	{
+		nums[j] = nums1[i];
+		i++;
+		j++;
+	}
+	free(nums1);
+}
+
+解法三：（力扣时间超出限制，但代码没问题）
+void moveOneR(int *nums,int numsSize)
+{
+    int last = nums[numsSize-1];//记录最后一个值
+    int cur = numsSize-1;
+    while(cur)
+    {
+        nums[cur] = nums[cur-1]; 
+        cur--;
+    }
+    nums[0] = last;
+}
+void rotate(int* nums, int numsSize, int k){
+    while(k--)
+    {
+        moveOneR(nums,numsSize);
+    }
+}
