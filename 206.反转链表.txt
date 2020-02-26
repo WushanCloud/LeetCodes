@@ -1,0 +1,40 @@
+if(A == NULL && A->next == NULL)
+            return true;
+        ListNode * quick = A->next;
+        ListNode * slowly = A;
+        while(quick && quick->next)//找到中间结点
+        {
+            quick = quick->next->next;
+            slowly = slowly->next;
+        }
+        quick = slowly;//保存中间结点
+        //头插法反转后半部分
+        slowly = slowly->next;
+        ListNode * midhead = (ListNode*)malloc(sizeof(ListNode));
+        midhead->next = NULL;
+        while(slowly != NULL)
+        {
+            ListNode* tmp1 = slowly->next;
+            ListNode* tmp2 = midhead->next;
+            midhead->next = slowly;
+            slowly->next = tmp2;
+            slowly = tmp1;
+        }
+        quick->next = NULL;
+        quick = A;
+        slowly = midhead->next;
+        while (quick != NULL)
+        {
+            if(quick->val != slowly->val)
+            {
+                return false;
+            }
+            else
+            {
+                quick = quick->next;
+                slowly = slowly->next;
+            }
+        }
+        return true;
+    }
+    ```
