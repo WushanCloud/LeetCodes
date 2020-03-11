@@ -11,7 +11,7 @@
 步骤 4） 3 是奇数，减 1 得到 2 。
 步骤 5） 2 是偶数，除以 2 得到 1 。
 步骤 6） 1 是奇数，减 1 得到 0 。
-来源：力扣（LeetCode） 链接：httpsleetcode-cn.comproblemsnumber-of-steps-to-reduce-a-number-to-zero 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+来源：力扣（LeetCode） 链接：https://leetcode-cn.com/problems/number-of-steps-to-reduce-a-number-to-zero 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
 int numberOfSteps (int num){
     int sum = 0;
@@ -19,7 +19,7 @@ int numberOfSteps (int num){
     {
         if(num%2 == 0)
         {
-            num = 1;
+            num >>= 1;
         }
         else
         {
