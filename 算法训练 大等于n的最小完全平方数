@@ -1,0 +1,44 @@
+问题描述
+　　输出大等于n的最小的完全平方数。
+　　若一个数能表示成某个自然数的平方的形式，则称这个数为完全平方数
+　　Tips：注意数据范围
+输入格式
+　　一个整数n
+输出格式
+　　大等于n的最小的完全平方数
+样例输入
+71711
+样例输出
+71824
+数据规模和约定
+　　n是32位有符号整数
+  
+  #include <iostream>
+#include <cstring>
+#include <vector>
+#include <algorithm>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+
+int main()
+{
+
+	long long n = 0;
+	cin >> n;
+
+	while (true)
+	{
+		double c = sqrt((double)n);
+		if ((c-(int)c) == 0)
+		{
+			cout << n;
+			return 0;
+		}
+		else
+		{
+			n++;
+		}
+	}
+	return 0;
+}
