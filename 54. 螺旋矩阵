@@ -1,0 +1,64 @@
+54. 螺旋矩阵
+难度中等
+给定一个包含 m x n 个元素的矩阵（m 行, n 列），请按照顺时针螺旋顺序，返回矩阵中的所有元素。
+示例 1:
+输入:
+[
+ [ 1, 2, 3 ],
+ [ 4, 5, 6 ],
+ [ 7, 8, 9 ]
+]
+输出: [1,2,3,6,9,8,7,4,5]
+
+示例 2:
+输入:
+[
+  [1, 2, 3, 4],
+  [5, 6, 7, 8],
+  [9,10,11,12]
+]
+输出: [1,2,3,4,8,12,11,10,9,5,6,7]
+
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> arr;
+        int m1 = 0;//行
+        int n1 = 0;//列
+        int m2 = matrix.size();
+        if (m2 == 0) return arr;
+        int n2 = matrix[0].size();
+        arr.resize(m2 * n2);
+        
+        int N = (min(m2,n2) + 1) / 2;
+        int S = 0;
+        int i = 0, j = 0;
+        int t = 0, T = m2 * n2;
+        while(S < N)
+        {
+            for (i = m1, j = n1; t < T && j < n2; j++)
+            {
+                arr[t++] = matrix[i][j];
+            }
+            m1++;
+            for (i = m1, j = n2-1; t < T && i < m2; i++)
+            {
+                arr[t++] = matrix[i][j];
+            }
+            n2--;
+            for (i = m2-1, j = n2-1; t < T && j >= n1; j--)
+            {
+                arr[t++] = matrix[i][j];
+            }
+            m2--;
+            for (i = m2-1, j = n1; t < T && i >= m1; i--)
+            {
+                arr[t++] = matrix[i][j];
+            }
+            n1++;
+            S++;
+        }
+        return arr;
+    }
+};
+
