@@ -1,0 +1,67 @@
+93. 复原IP地址
+给定一个只包含数字的字符串，复原它并返回所有可能的 IP 地址格式。
+
+有效的 IP 地址正好由四个整数（每个整数位于 0 到 255 之间组成），整数之间用 '.' 分隔。
+
+ 
+
+示例:
+
+输入: "25525511135"
+输出: ["255.255.11.135", "255.255.111.35"]
+
+class Solution {
+public:
+    int numlen(int num)
+    {
+        int sum = 0;
+        if (num == 0)
+            return 1;
+        while(num)
+        {
+            num/=10;
+            sum++;
+        }
+        return sum;
+    }
+    void fun(vector<string>& vs, string& s, string ip, int index, int t)
+    {
+        if (t == 4)
+        {
+            if (s.size() == index)
+            {
+                ip.pop_back();
+                vs.push_back(ip);
+            }
+            return;
+        }
+        int num = 0;
+        for (int i = 0; i < 3; i++)
+        {
+            if (index < s.size())
+            {
+                num = num*10 + s[index+i]-'0';
+                if (numlen(num) != i+1)
+                    continue;
+                if (num>=0 && num <= 255)
+                {
+                    fun(vs, s, ip + to_string(num)+'.', index+i+1, t+1);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else
+            {
+                return;
+            }
+        }
+    }
+
+    vector<string> restoreIpAddresses(string s) {
+        vector<string> vs;
+        fun(vs, s, "", 0, 0);
+        return vs;
+    }
+};
